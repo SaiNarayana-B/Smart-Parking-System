@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Parker</title>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css'>
+  <link rel="stylesheet" href="./style.css">
+  <script src="script.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div id="login-box">
+        <div class="logo">
+            <img src="http://placehold.it/100x100?text=DD" class="img img-responsive img-circle center-block"/>
+            <h1 class="logo-caption"><span class="tweak">L</span>ogin</h1>
+        </div><!-- /.logo -->
+        <div class="controls">
+            <input type="text" id="username" name="username" placeholder="Username" class="form-control" />
+            <input type="password" id="password" name="password" placeholder="Password" class="form-control" />
+            <button type="button" id="login-button" class="btn btn-default btn-block btn-custom">Login</button>
+        </div>
+    </div>
+</div>
+<div id="particles-js"></div>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css'></script>
+<script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
+<script>
+document.getElementById("login-button").addEventListener("click", function() {
+    var enteredUsername = document.getElementById("username").value;
+    var enteredPassword = document.getElementById("password").value;
+
+    var allowedUsers = {
+        "a05179639@gmail.com": "password",
+        "fghj79911@gmail.com": "password",
+        "gojo@gmail.com": "password",
+        "zoro@gmail.com": "password"
+    };
+
+    if (allowedUsers.hasOwnProperty(enteredUsername) && allowedUsers[enteredUsername] === enteredPassword) {
+        alert("Login Successful");
+        
+        // Redirect to parking.html with the username as a URL parameter
+        window.location.href = "parking.html?user=" + encodeURIComponent(enteredUsername);
+    } else {
+        alert("Invalid username or password. Please try again.");
+    }
+});
+</script>
+</body>
+</html>

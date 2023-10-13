@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parking Status</title>
+  <style>
+    .container {
+      text-align: center;
+      padding: 20px;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    .parking-slot {
+      width: 200px;
+      height: 100px;
+      background-color: #f2f2f2;
+      border: 2px solid #ccc;
+      display: inline-block;
+      margin: 10px;
+      font-size: 18px;
+      color: #333;
+      text-align: center;
+      line-height: 100px;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+    .available {
+      background-color: #5cb85c;
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    .full {
+      background-color: #d9534f;
+      color: #fff;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+    <h1>Parking Status</h1>
+    <div id="parking-status">
+        <div class="parking-slot" id="parking-slot-1">Slot 1</div>
+        <div class="parking-slot" id="parking-slot-2">Slot 2</div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var loggedInUser = getLoggedInUser();
+
+    var parkingStatusElement1 = document.getElementById("parking-slot-1");
+    var parkingStatusElement2 = document.getElementById("parking-slot-2");
+
+    if (loggedInUser === "a05179639@gmail.com") {
+        parkingStatusElement1.classList.add("available");
+    } else if (loggedInUser === "fghj79911@gmail.com") {
+        parkingStatusElement2.classList.add("available");
+        parkingStatusElement1.classList.remove("available");
+    } else {
+        parkingStatusElement1.classList.add("full");
+        parkingStatusElement2.classList.add("full");
+    }
+});
+
+function getLoggedInUser() {
+    // Get the URL parameter for "user" using JavaScript
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("user");
+}
+</script>
+</body>
+</html>
