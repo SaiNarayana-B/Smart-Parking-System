@@ -1,77 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Parking Status</title>
-  <style>
-    .container {
-      text-align: center;
-      padding: 20px;
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
-    }
-
-    .parking-slot {
-      width: 200px;
-      height: 100px;
-      background-color: #f2f2f2;
-      border: 2px solid #ccc;
-      display: inline-block;
-      margin: 10px;
-      font-size: 18px;
-      color: #333;
-      text-align: center;
-      line-height: 100px;
-      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-      cursor: pointer;
-      transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
-    }
-
-    .available {
-      background-color: #5cb85c;
-      color: #fff;
-      transform: scale(1.05);
-    }
-
-    .full {
-      background-color: #d9534f;
-      color: #fff;
-      transform: scale(1.05);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Parking Status</title>
+    <style>
+        /* Your CSS styles here */
+        .parking-slot {
+            /* Define your parking slot styles here */
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+        }
+        .available {
+            background-color: green;
+        }
+        .full {
+            background-color: red;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <h1>Parking Status</h1>
     <div id="parking-status">
-        <div class="parking-slot" id="parking-slot-1">Slot 1</div>
-        <div class="parking-slot" id="parking-slot-2">Slot 2</div>
+        <!-- Parking slots will be added here dynamically -->
     </div>
+    <button id="send-parking-details-button">Send Parking Details</button>
 </div>
 
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    var loggedInUser = getLoggedInUser();
+    document.addEventListener("DOMContentLoaded", function () {
+        var loggedInUser = getLoggedInUser();
+        var parkingStatusElement1, parkingStatusElement2;
 
-    var parkingStatusElement1 = document.getElementById("parking-slot-1");
-    var parkingStatusElement2 = document.getElementById("parking-slot-2");
+        if (loggedInUser === "a05179639@gmail.com") {
+            createParkingSlot("Slot 1", "available");
+        } else if (loggedInUser === "fghj79911@gmail.com") {
+            createParkingSlot("Slot 2", "available");
+        } else {
+            createParkingSlot("Slot 1", "full");
+            createParkingSlot("Slot 2", "full");
+        }
 
-    if (loggedInUser === "a05179639@gmail.com") {
-        parkingStatusElement1.classList.add("available");
-    } else if (loggedInUser === "fghj79911@gmail.com") {
-        parkingStatusElement2.classList.add("available");
-        parkingStatusElement1.classList.remove("available");
-    } else {
-        parkingStatusElement1.classList.add("full");
-        parkingStatusElement2.classList.add("full");
+        function createParkingSlot(slotText, slotStatus) {
+            var parkingSlot = document.createElement("div");
+            parkingSlot.className = "parking-slot " + slotStatus;
+            parkingSlot.textContent = slotText;
+            document.getElementById("parking-status").appendChild(parkingSlot);
+        }
+    });
+
+    function getLoggedInUser() {
+        // Get the URL parameter for "user" using JavaScript
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get("user");
     }
-});
 
-function getLoggedInUser() {
-    // Get the URL parameter for "user" using JavaScript
-    var urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("user");
-}
+    document.getElementById("send-parking-details-button").addEventListener("click", function () {
+        var loggedInUser = getLoggedInUser();
+        var parkingSlotDetails;
+
+        if (loggedInUser === "a05179639@gmail.com") {
+            parkingSlotDetails = "Your parking slot is Slot 1.";
+        } else if (loggedInUser === "fghj79911@gmail.com") {
+            parkingSlotDetails = "Your parking slot is Slot 2.";
+        } else {
+            parkingSlotDetails = "Sorry, no parking slot available for your email.";
+        }
+
+        sendParkingDetailsEmail(loggedInUser, parkingSlotDetails);
+    });
+
+    function sendParkingDetailsEmail(userEmail, details) {
+        // Define your EmailJS service and template IDs
+        var serviceID = "service_1eo7b17"; // Replace with your EmailJS service ID
+        var templateID = "template_ld6t3jg"; // Replace with your EmailJS template ID
+
+        // Define your EmailJS public key
+        var publicKey = "5aIq8rL7kps6ydnMB"; // Replace with your EmailJS public key
+
+        // Set the parameters for your email template
+        var templateParams = {
+            to_email: userEmail,
+            parking_details: details // Use the updated parking slot details here
+        };
+
+        // Use EmailJS to send an email with the parking details
+        emailjs.send(serviceID, templateID, templateParams, publicKey)
+            .then(function(response) {
+                console.log("Email sent:", response);
+            }, function(error) {
+                console.error("Email could not be sent:", error);
+            });
+    }
 </script>
 </body>
 </html>
