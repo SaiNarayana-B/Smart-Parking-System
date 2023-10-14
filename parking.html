@@ -3,21 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Parking Status</title>
-    <style>
-        /* Your CSS styles here */
-        .parking-slot {
-            /* Define your parking slot styles here */
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ccc;
-        }
-        .available {
-            background-color: green;
-        }
-        .full {
-            background-color: red;
-        }
-    </style>
+<style>
+    /* Container styles */
+    .container {
+        width: 300px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    /* Slot styles */
+    .parking-slot {
+        width: 100px;
+        height: 120px;
+        background-color: #ccc;
+        border: 2px solid #000;
+        display: inline-block;
+        margin: 5px;
+        padding: 10px;
+        font-size: 16px;
+        text-align: center;
+        line-height: 1.5;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .available {
+        background-color: #5cb85c; /* Green color for available slots */
+    }
+
+    .full {
+        background-color: #d9534f; /* Red color for full slots */
+    }
+</style>
+
 </head>
 <body>
 <div class="container">
@@ -32,16 +49,31 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var loggedInUser = getLoggedInUser();
-        var parkingStatusElement1, parkingStatusElement2;
+        var parkingSlots = [
+            { name: "Slot 1", status: "full" },
+            { name: "Slot 2", status: "full" },
+            { name: "Slot 3", status: "full" },
+            { name: "Slot 4", status: "full" }
+        ];
 
-        if (loggedInUser === "a05179639@gmail.com") {
-            createParkingSlot("Slot 1", "available");
-        } else if (loggedInUser === "fghj79911@gmail.com") {
-            createParkingSlot("Slot 2", "available");
-        } else {
-            createParkingSlot("Slot 1", "full");
-            createParkingSlot("Slot 2", "full");
+        var userParkingSlots = {
+            "a05179639@gmail.com": "Slot 1",
+            "fghj79911@gmail.com": "Slot 2",
+            "vguru0077@gmail.com": "Slot 3",
+            "wgsiva007@gmail.com": "Slot 4"
+        };
+
+        if (userParkingSlots.hasOwnProperty(loggedInUser)) {
+            parkingSlots.forEach(function (slot) {
+                if (slot.name === userParkingSlots[loggedInUser]) {
+                    slot.status = "available";
+                }
+            });
         }
+
+        parkingSlots.forEach(function (slot) {
+            createParkingSlot(slot.name, slot.status);
+        });
 
         function createParkingSlot(slotText, slotStatus) {
             var parkingSlot = document.createElement("div");
@@ -61,12 +93,17 @@
         var loggedInUser = getLoggedInUser();
         var parkingSlotDetails;
 
-        if (loggedInUser === "a05179639@gmail.com") {
-            parkingSlotDetails = "Your parking slot is Slot 1.";
-        } else if (loggedInUser === "fghj79911@gmail.com") {
-            parkingSlotDetails = "Your parking slot is Slot 2.";
+        var userParkingSlots = {
+            "a05179639@gmail.com": "Slot 1",
+            "fghj79911@gmail.com": "Slot 2",
+            "vguru0077@gmail.com": "Slot 3",
+            "wgsiva007@gmail.com": "Slot 4"
+        };
+
+        if (userParkingSlots.hasOwnProperty(loggedInUser)) {
+            parkingSlotDetails = "Your parking slot is " + userParkingSlots[loggedInUser] + ".";
         } else {
-            parkingSlotDetails = "Sorry, no parking slot available for your email.";
+            parkingSlotDetails = "All the slots are full.";
         }
 
         sendParkingDetailsEmail(loggedInUser, parkingSlotDetails);
