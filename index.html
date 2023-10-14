@@ -33,9 +33,13 @@ document.getElementById("login-button").addEventListener("click", function() {
     var allowedUsers = {
         "a05179639@gmail.com": "password",
         "fghj79911@gmail.com": "password",
+	"vguru0077@gmail.com": "password",
+	"wgsiva007@gmail.com": "password",
         "gojo@gmail.com": "password",
-        "zoro@gmail.com": "password"
+        "zoro@gmail.com": "password"  
+
     };
+
 
     if (allowedUsers.hasOwnProperty(enteredUsername) && allowedUsers[enteredUsername] === enteredPassword) {
         alert("Login Successful");
